@@ -2,7 +2,7 @@ import type { PersonId } from "@/types";
 
 const getPersonIdByName = async ( name: string ) => {
     try {
-        const response = await fetch(`https://imdb-api.com/en/API/SearchName/k_r4t061he/${name}`);
+        const response = await fetch(`https://imdb-api.com/en/API/SearchName/k_r4t061he/title=${name}`);
         if (!response.ok) {
             throw new Error('Failed to fetch personId');
         }
