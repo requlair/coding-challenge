@@ -52,7 +52,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .card {
     background-color: #F4F4F4;
-    width: 100vw;
     height: 100px;
     margin-top: 15px;
     margin-bottom: 15px;

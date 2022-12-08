@@ -1,13 +1,17 @@
 <template>
-  <header class="header">
-    <img alt="innspire-logo" src="./assets/images/innspire-logo.png"/>
+  <header>
+    <div>
+      <img alt="innspire-logo" src="./assets/images/innspire-logo.png"/>
+    </div>
   </header>
 
   <RouterView />
 
-  <footer class="footer">
-    <p>Naam</p>
-    <p><a>link</a></p>
+  <footer>
+    <div>
+      <span>Auteur</span>
+      <span>Email</span>
+    </div>
   </footer>
 </template>
 
@@ -15,18 +19,22 @@
 import { RouterView } from 'vue-router'
 </script>
 
-<style lang="scss">
-  .header{
+<style lang="scss" scoped>
+  header{
     background-color: white;
-    width: 100vw;
-
     img {
       display: block;
       width: 10%;
       padding: 5px;
     }
   }
-  .footer{
-    width: 100vw; 
+  footer{
+    background-color: lightgray;
+  }
+  header, footer {
+    div {
+      max-width: 60rem;
+      margin: auto;
+    }
   }
 </style>
