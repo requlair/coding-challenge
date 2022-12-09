@@ -6,9 +6,9 @@ export type MovieId = {
 }
 export interface Movie {
     id: MovieId,
-    role: 'Director' | 'Actor',
+    image: string,
     title: string,
-    year: number,
+    description: string,
 }
 export interface MovieDetails {
     id: MovieId,

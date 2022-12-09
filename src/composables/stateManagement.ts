@@ -1,8 +1,9 @@
 import { reactive, computed, type Ref, readonly } from 'vue';
-import getPersonIdByName from '@/services/getPersonIdByName';
-import getMoviesByIdAndRole from '@/services/getMoviesByIdAndRole';
+import getPersonId from '@/services/getPersonId'
+import getMovieIds from '@/services/getMovieIds';
+import getMovies from '@/services/getMovies';
 import getMovieDetails from '@/services/getMovieDetails';
-import { findMatchingMovies } from '@/utils/utilities';
+import { findMatchingIds } from '@/utils/utilities';
 import type { Movie, MovieDetails, MovieId } from '@/types';
 
 const loadingState: { overview: Status, details: Status }= reactive({
@@ -24,14 +25,11 @@ async function loadOverview () {
     if(!state.overview.length){
         setLoadingState('overview','loading')
         try {
-            const hanksId = await getPersonIdByName('Tom Hanks');
-            const spielbergId = await getPersonIdByName('Steven Spielberg');
-    
-            const hankMovies = await getMoviesByIdAndRole(hanksId, 'Actor');
-            const spielbergMovies = await getMoviesByIdAndRole(spielbergId, 'Director');
-    
-            const matchingMovies = findMatchingMovies(hankMovies, spielbergMovies);
-            setOverview(matchingMovies);
+            const [ spielBergId, hanksId ] = await Promise.all([getPersonId('Steven Spielberg'), getPersonId('Tom Hanks')]);
+            const [ spielBergMovies, hanksMovies ] = await Promise.all([getMovieIds(spielBergId, 'Director'), getMovieIds(hanksId, 'Actor')]);
+            const matchingIds = findMatchingIds(spielBergMovies, hanksMovies);
+            const movies = await getMovies(matchingIds);
+            setOverview(movies);
             setLoadingState('overview', 'done');
         } catch (err) {
             setLoadingState('overview','error')

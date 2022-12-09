@@ -1,11 +1,11 @@
-import type { Movie } from "@/types";
+import type { Movie, MovieId } from "@/types";
 
-const findMatchingMovies = (movieList1: Movie[], movielist2: Movie[]) => {
-    return movieList1.filter(movie1 => {
-        return movielist2.find(movie2 => movie2.id === movie1.id)
+const findMatchingIds = (idList1: MovieId[], idList2: MovieId[]) => {
+    return idList1.filter(id1 => {
+        return idList2.find(id2 => id2 === id1)
     });
 }
 
 export {
-    findMatchingMovies,
+    findMatchingIds,
 };
