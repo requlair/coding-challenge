@@ -1,21 +1,19 @@
 <template>
     <div class="card">
-        <img alt="movie-image" :src="image"/>
-        <div class="content">
-            <h4>{{ title }} ({{ year }})</h4>
-            <p>{{ description }}</p> 
-        </div>
-        <router-link :to="{ name: 'details' }" class="chevron"></router-link>
+        <img alt="movie-logo" src="../assets/images/movie-logo.png"/>
+        <h4>{{ title }} ({{ year }})</h4>
+        <button @click="navigateToDetails()"></button>
     </div>
 </template>
   
 <script lang='ts'>
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'card',
     props: {
-        image: {
+        id: {
             type: String,
             required: true,
         },
@@ -27,23 +25,24 @@ export default defineComponent({
             type: Number,
             required: true,
         },
-        description: {
-            type: String,
-            required: true,
-        }
     },
     setup (props: {
-        image: string;
+        id: string,
         title: string;
         year: number;
-        description: string;
     }) {
-        const { image, title, year, description } = props;
+        const router = useRouter()
+        const { id, title, year } = props;
+        const navigateToDetails = () => {
+            router.push({
+                path: `/overview/details/${id}`,
+            })
+        };
+
         return {
-            image,
             title,
             year,
-            description
+            navigateToDetails,
         }
     },
 });
@@ -52,39 +51,47 @@ export default defineComponent({
 <style lang="scss" scoped>
 .card {
     background-color: #F4F4F4;
-    height: 100px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    img,.content,.chevron{
-        max-height: 90%;
-        margin-left: 15px;
-        margin-right: 15px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 15px 20px 20px 15px;
+    @media only screen and (max-width: 45em) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; 
     }
+
     img {
-        max-width: 80%;
-        max-height: 80%;
-    }
-    .content {
-        max-height: 90%;
-        h4 {
-            margin-top: 0px;
-            margin-bottom: 15px;
-        }
-        p {
-            margin: 0px;
+        max-width: 40%;
+        @media only screen and (max-width: 45em) {
+            max-width: 30%;
         }
     }
-    .chevron:after {
-        content: ' ';
-        display: inline-block;
-        border-bottom: 5px solid lightgray;
-        border-right: 5px solid lightgray;
-        height: 15px;
-        width: 15px;
-        transform: rotate(-45deg);
+
+    h4 {
+        @media only screen and (min-width: 45em) {
+            min-height: 4rem;
+        }
+    }
+    button {
+        border: none;
+        background-color: inherit;
+        @media only screen and (min-width: 45em) {
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        &:after {
+            @media only screen and (max-width: 45em) {
+                content: ' ';
+                display: inline-block;
+                border-bottom: 5px solid lightgray;
+                border-right: 5px solid lightgray;
+                height: 15px;
+                width: 15px;
+                transform: rotate(-45deg);
+            }
+            content: 'See Details';
+        }
     }
 }
 </style>

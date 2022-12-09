@@ -7,11 +7,11 @@
             <img alt="movie-image" src="https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1_FMjpg_UX1000_.jpg"/>
           </div>
           <div class="col-8">
+            <h1>{{ id }}</h1>
             <h1>Saving Private Ryan (1998)</h1>
             <strong>Here is a description about the Saving Private Ryan Movie</strong>
           </div>
         </div>
-
       </div>
     </header>
 
@@ -24,12 +24,32 @@
 
 <script lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
+import stateManagement from '@/composables/stateManagement';
+import type { MovieId } from '@/types';
 
 export default defineComponent({
-  name: 'details-page',
+  name: 'overview-page',
   components: {
-  Breadcrumbs,
+    Breadcrumbs,
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  setup (props: {
+        id: string,
+    }) {
+    const { loadingState, loadDetails } = stateManagement();
+    onMounted( async () => {
+      await loadDetails(props.id as unknown as MovieId);
+    })
+    return {
+      id: props.id,
+      loadingState,
+    }
   }
 })
 </script>

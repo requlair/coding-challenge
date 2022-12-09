@@ -10,38 +10,40 @@
     </section>
 
     <section class="container">
-        <card
-        image="https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1_FMjpg_UX1000_.jpg"
-        title="Saving Private Ryan"
-        :year=1998
-        description="Here is a description about the Saving Private Ryan Movie"
-      ></card>
-      <card
-        image="https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1_FMjpg_UX1000_.jpg"
-        title="Saving Private Ryan"
-        :year=1998
-        description="Here is a description about the Saving Private Ryan Movie"
-      ></card>
-      <card
-        image="https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1_FMjpg_UX1000_.jpg"
-        title="Saving Private Ryan"
-        :year=1998
-        description="Here is a description about the Saving Private Ryan Movie"
-      ></card>
+      <div class="row">
+        <div v-for="movie in getOverview" class="col-4">
+          <card
+          :id="(movie.id as unknown as string)"
+          :title="movie.title"
+          :year="movie.year"
+        />
+        </div>
+      </div>
     </section>
 
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import Card from '@/components/Card.vue';
+import stateManagement from '@/composables/stateManagement';
 
 export default defineComponent({
   name: 'overview-page',
   components: {
     Card,
   },
+  setup () {
+    const { loadingState, loadOverview, getOverview } = stateManagement();
+    onMounted( async () => {
+      await loadOverview();
+    })
+    return {
+      loadingState,
+      getOverview,
+    }
+  }
 })
 </script>
 
@@ -54,5 +56,5 @@ header {
       max-width: 60%;
       margin: auto;
     }
-}
+  }
 </style>

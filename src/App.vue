@@ -5,7 +5,7 @@
     </div>
   </header>
 
-  <RouterView />
+  <RouterView/>
 
   <footer>
     <div>
@@ -15,8 +15,8 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
+<script lang="ts">
+  import { RouterView } from 'vue-router'
 </script>
 
 <style lang="scss" scoped>
@@ -30,6 +30,8 @@ import { RouterView } from 'vue-router'
   }
   footer{
     background-color: lightgray;
+    position: sticky;
+    top: 100%;
   }
   header, footer {
     div {

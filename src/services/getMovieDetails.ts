@@ -1,4 +1,4 @@
-import type { MovieId } from "@/types";
+import type { MovieDetails, MovieId } from "@/types";
 
 const getMovieDetails = async ( id: MovieId ) => {
     try {
@@ -14,12 +14,3 @@ const getMovieDetails = async ( id: MovieId ) => {
 };
 
 export default getMovieDetails;
-
-interface MovieDetails {
-    title: string,
-    year: string,
-    image: string,
-    releaseDate: string,
-    runtimeMins: string,
-    plot: string,
-}
