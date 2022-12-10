@@ -6,7 +6,7 @@ const getMovies = async ( ids: MovieId[] ) => {
         const responses = await Promise.all(promises);
         responses.forEach(response => {
             if(!response.ok){
-                throw new Error('Failed to fetch Movies');
+                throw new Error('Failed to fetch movies');
             }
         })
         const movieList: MovieResponse[] = await Promise.all(responses.map((response) => response.json()));

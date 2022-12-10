@@ -35,7 +35,7 @@ describe('getMovies module', () => {
             } catch (err: any){
                 error = err;
             }
-            expect(error.message).toBe('Failed to fetch Movies');
+            expect(error.message).toBe('Failed to fetch movies');
             response.ok = true;
         });
         it('should throw error when no movies are found', async () => {

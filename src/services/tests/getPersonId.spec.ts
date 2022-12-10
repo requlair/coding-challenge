@@ -1,6 +1,5 @@
 import getPersonId from '../getPersonId';
 import { vi, describe, expect, it } from 'vitest'
-import type { PersonId } from "@/types";
 
 describe('getPersonId module', () => {
     const body = {
