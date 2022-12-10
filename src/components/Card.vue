@@ -34,6 +34,7 @@ export default defineComponent({
         const router = useRouter()
         const { id, title, year } = props;
         const navigateToDetails = () => {
+            console.log('ik ben aangeklikt');
             router.push({
                 path: `/overview/details/${id}`,
             })

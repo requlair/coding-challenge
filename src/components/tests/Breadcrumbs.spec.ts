@@ -10,7 +10,7 @@ vi.mock('vue-router', () => ({
 
 const overviewPath = { path: '/overview', name: 'overview', meta: { title: 'Overview' } };
 
-describe('breadcrumb component', () => {
+describe('Breadcrumb component', () => {
   it('should render no crumbs when on root path', () => {
     const router = {
       options: { routes: [
