@@ -1,4 +1,4 @@
-import type { MovieId, Movie } from "@/types";
+import type { MovieId, Movie, MovieResponse } from "@/types";
 
 const getMovies = async ( ids: MovieId[] ) => {
     try {
@@ -21,7 +21,3 @@ const getMovies = async ( ids: MovieId[] ) => {
 };
 
 export default getMovies;
-
-interface MovieResponse {
-    results: Movie[];
-}

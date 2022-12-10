@@ -23,3 +23,7 @@ export interface CastMovie {
     id: MovieId,
     role: 'Director' | 'Actor',
 }
+
+export interface MovieResponse {
+    results: Movie[];
+}

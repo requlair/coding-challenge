@@ -1,6 +1,6 @@
 import getMovieIds from '../getMovieIds';
 import { vi, describe, expect, it } from 'vitest'
-import type { MovieId, PersonId, CastMovie } from "@/types";
+import type { PersonId } from "@/types";
 
 describe('getMovieIds module', () => {
     const body = {
