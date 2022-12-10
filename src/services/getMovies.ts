@@ -10,7 +10,12 @@ const getMovies = async ( ids: MovieId[] ) => {
             }
         })
         const movieList: MovieResponse[] = await Promise.all(responses.map((response) => response.json()));
-        const movies: Movie[] = movieList.map(movie => movie.results[0]);
+        const movies: Movie[] = []
+        movieList.forEach(movie => {
+            if(movie.results.length) {
+                movies.push(movie.results[0])
+            }
+        });
         if(!movies.length){
             throw new Error('No movies found');
         }
