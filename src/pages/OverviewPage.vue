@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, getCurrentInstance, onMounted } from 'vue';
 import Card from '@/components/Card.vue';
 import stateManagement from '@/composables/stateManagement';
 
@@ -36,6 +36,8 @@ export default defineComponent({
   },
   setup () {
     const { loadingState, loadOverview, getOverview } = stateManagement();
+    const { proxy } = getCurrentInstance();
+    console.log(proxy.$route);
     onMounted( async () => {
       await loadOverview();
     })
