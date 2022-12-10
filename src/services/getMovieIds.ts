@@ -1,4 +1,4 @@
-import type { MovieId, PersonId } from "@/types";
+import type { CastMovie, PersonId } from "@/types";
 
 const getMovieIds = async ( id: PersonId, role: 'Director' | 'Actor' ) => {
     try {
@@ -6,7 +6,7 @@ const getMovieIds = async ( id: PersonId, role: 'Director' | 'Actor' ) => {
         if (!response.ok) {
             throw new Error('Failed to fetch Movies');
         }
-        const movieList: { castMovies: castMovie[] } = await response.json();
+        const movieList: { castMovies: CastMovie[] } = await response.json();
         const moviesByRole = movieList.castMovies.filter(movie => movie.role === role);
         if (!moviesByRole.length) {
             throw new Error('No movies found');
@@ -19,8 +19,3 @@ const getMovieIds = async ( id: PersonId, role: 'Director' | 'Actor' ) => {
 };
 
 export default getMovieIds;
-
-interface castMovie {
-    id: MovieId,
-    role: 'Director' | 'Actor',
-}

@@ -19,3 +19,7 @@ export interface MovieDetails {
     runtimeMins: string,
     plot: string,
 }
+export interface CastMovie {
+    id: MovieId,
+    role: 'Director' | 'Actor',
+}
