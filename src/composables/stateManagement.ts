@@ -1,76 +1,73 @@
-import { reactive, computed, type Ref, readonly } from 'vue';
-import getPersonId from '@/services/getPersonId'
-import getMovieIds from '@/services/getMovieIds';
-import getMovies from '@/services/getMovies';
-import getMovieDetails from '@/services/getMovieDetails';
+import { reactive, computed } from 'vue';
+import { getPersonId } from '@/services/getPersonId'
+import { getMovieIds } from '@/services/getMovieIds';
+import { getMovies } from '@/services/getMovies';
+import { getMovieDetails } from '@/services/getMovieDetails';
 import { findMatchingIds } from '@/utils/utilities';
-import type { Movie, MovieDetails, MovieId } from '@/types';
+import type { Movie, MovieDetails, MovieId, PersonId } from '@/types';
 
-const loadingState: { overview: Status, details: Status }= reactive({
-    overview: 'initial',
-    details: 'initial'
+const loadingState: { movies: Status, movieDetails: Status }= reactive({
+    movies: 'initial',
+    movieDetails: 'initial'
 });
-const state: { overview: Movie[], details: MovieDetails[] } = reactive({
-    overview: [],
-    details: [],
+const state: { movies: Movie[], movieDetails: MovieDetails[] } = reactive({
+    movies: [],
+    movieDetails: [],
 });
 
-function setLoadingState(key: 'overview' | 'details', status: Status) {
+function setLoadingState(key: 'movies' | 'movieDetails', status: Status) {
     loadingState[key] = status;
 };
 
 const getLoadingState = computed(() => loadingState);
 
-async function loadOverview () {
-    if(!state.overview.length){
-        setLoadingState('overview','loading')
+async function loadMovies () {
+    if(!state.movies.length){
+        setLoadingState('movies','loading')
         try {
             const [ spielBergId, hanksId ] = await Promise.all([getPersonId('Steven Spielberg'), getPersonId('Tom Hanks')]);
             const [ spielBergMovies, hanksMovies ] = await Promise.all([getMovieIds(spielBergId, 'Director'), getMovieIds(hanksId, 'Actor')]);
             const matchingIds = findMatchingIds(spielBergMovies, hanksMovies);
             const movies = await getMovies(matchingIds);
             setOverview(movies);
-            setLoadingState('overview', 'done');
+            setLoadingState('movies', 'done');
         } catch (err) {
-            setLoadingState('overview','error')
-            throw err;
+            setLoadingState('movies','error')
         }
     }
 }
-function setOverview(overview: Movie[]) { 
-    state.overview = overview;
+function setOverview(movies: Movie[]) { 
+    state.movies = movies;
 }
-const getOverview = computed(() => state.overview);
+const getMoviesState = computed(() => state.movies);
 
-async function loadDetails (movieId: MovieId) {
-    const alreadyPresent = state.details.filter(movie => movie.id === movieId).length;
+async function loadMovieDetails (movieId: MovieId) {
+    const alreadyPresent = state.movieDetails.filter(movie => movie.id === movieId).length;
     if(!alreadyPresent){
-        setLoadingState('details','loading')
+        setLoadingState('movieDetails','loading')
         try {
             const details = await getMovieDetails(movieId);
             setDetails(details);
-            setLoadingState('details','done')
+            setLoadingState('movieDetails','done')
         } catch (err) {
-            setLoadingState('details','error')
-            throw err;
+            setLoadingState('movieDetails','error')
         }
     }
 }
 
-function setDetails(details: MovieDetails) {
-    state.details.push(details);
+function setDetails(movieDetails: MovieDetails) {
+    state.movieDetails.push(movieDetails);
 }
 
-const getDetails = computed(() => state.details);
+const getMovieDetailsState = computed(() => state.movieDetails);
 
 export default function stateManagement() {
     return {
-        loadingState,
         getLoadingState,
-        loadOverview,
-        getOverview,
-        loadDetails,
-        getDetails,
+        loadMovies,
+        getMoviesState,
+        loadMovieDetails,
+        getMovieDetailsState,
     }
 }
 

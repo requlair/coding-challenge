@@ -1,4 +1,4 @@
-import getMovies from '../getMovies';
+import { getMovies } from '../getMovies';
 import { vi, describe, expect, it } from 'vitest'
 import type { MovieId, PersonId } from "@/types";
 

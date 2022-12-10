@@ -25,4 +25,4 @@ const getMovies = async ( ids: MovieId[] ) => {
     }
 };
 
-export default getMovies;
+export { getMovies };

@@ -1,4 +1,4 @@
-import getPersonId from '../getPersonId';
+import { getPersonId } from '../getPersonId';
 import { vi, describe, expect, it } from 'vitest'
 
 describe('getPersonId module', () => {

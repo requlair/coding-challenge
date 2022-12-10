@@ -16,4 +16,4 @@ const getMovieDetails = async ( id: MovieId ) => {
     }
 };
 
-export default getMovieDetails;
+export { getMovieDetails };

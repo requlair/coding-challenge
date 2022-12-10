@@ -18,7 +18,7 @@ const getPersonId = async ( name: string ) => {
     }
 };
 
-export default getPersonId;
+export { getPersonId };
 
 interface Person {
     id: PersonId,

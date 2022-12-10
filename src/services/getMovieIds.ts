@@ -18,4 +18,4 @@ const getMovieIds = async ( id: PersonId, role: 'Director' | 'Actor' ) => {
     }
 };
 
-export default getMovieIds;
+export { getMovieIds };
