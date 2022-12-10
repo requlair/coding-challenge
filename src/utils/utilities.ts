@@ -1,4 +1,4 @@
-import type { Movie, MovieId } from "@/types";
+import type { MovieId } from "@/types";
 
 const findMatchingIds = (idList1: MovieId[], idList2: MovieId[]) => {
     return idList1.filter(id1 => {
