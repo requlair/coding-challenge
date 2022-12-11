@@ -22,7 +22,7 @@ describe('Card component', () => {
   });
 });
 
-const createWrapper = (props = { id: 'id', title: 'title', year: 1998}) => {
+const createWrapper = (props = { id: 'id', title: 'title', year: '1998', image: 'image'}) => {
   return shallowMount(Card, {
     props: props,
   });

@@ -2,7 +2,7 @@ import type { MovieId, Movie, MovieResponse } from "@/types";
 
 const getMovies = async ( ids: MovieId[] ) => {
     try {
-        const promises = ids.map(id => fetch(`https://imdb-api.com/en/API/SearchMovie/k_r4t061he/id=${id}`))
+        const promises = ids.map(id => fetch(`https://imdb-api.com/en/API/SearchMovie/k_r4t061he/${id}`))
         const responses = await Promise.all(promises);
         responses.forEach(response => {
             if(!response.ok){

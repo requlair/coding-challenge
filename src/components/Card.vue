@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <img alt="movie-logo" src="../assets/images/movie-logo.png"/>
+        <img alt="movie-logo" :src="image"/>
         <h4>{{ title }} ({{ year }})</h4>
         <button @click="navigateToDetails()"></button>
     </div>
@@ -22,25 +22,30 @@ export default defineComponent({
             required: true,
         },
         year: {
-            type: Number,
+            type: String,
             required: true,
         },
+        image: {
+            type: String,
+            required: true,
+        }
     },
     setup (props: {
         id: string,
         title: string;
-        year: number;
+        year: string;
+        image: string;
     }) {
         const router = useRouter()
-        const { id, title, year } = props;
+        const { id, title, year, image } = props;
         const navigateToDetails = () => {
-            console.log('ik ben aangeklikt');
             router.push({
                 path: `/overview/details/${id}`,
             })
         };
 
         return {
+            image,
             title,
             year,
             navigateToDetails,
@@ -63,6 +68,7 @@ export default defineComponent({
 
     img {
         max-width: 40%;
+        padding: 10px;
         @media only screen and (max-width: 45em) {
             max-width: 30%;
         }

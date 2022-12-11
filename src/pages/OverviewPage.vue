@@ -10,15 +10,16 @@
     </section>
 
     <section class="container">
-      <div class="row">
-        <div v-for="movie in getMoviesState" class="col-4">
-          <card
-          :id="(movie.id as unknown as string)"
-          :title="movie.title"
-          :year="movie.year"
-        />
-        </div>
-      </div>
+        <load-container class="row" :status="getLoadingState.movies" variant="card">
+          <div v-for="movie in getMoviesState" class="col-4">
+            <card
+            :id="(movie.id as unknown as string)"
+            :title="movie.title"
+            :year="movie.description"
+            :image="movie.image"
+            />
+          </div>
+        </load-container>
     </section>
 
   </div>
@@ -27,12 +28,14 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 import Card from '@/components/Card.vue';
+import LoadContainer from '@/components/LoadContainer.vue';
 import stateManagement from '@/composables/stateManagement';
 
 export default defineComponent({
   name: 'overview-page',
   components: {
     Card,
+    LoadContainer,
   },
   setup () {
     const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
