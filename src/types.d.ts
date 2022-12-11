@@ -8,6 +8,7 @@ export interface Movie {
     id: MovieId,
     image: string,
     title: string,
+    year: number,
     description: string,
 }
 export interface MovieDetails {

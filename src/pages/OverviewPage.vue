@@ -11,7 +11,7 @@
 
     <section class="container">
       <div class="row">
-        <div v-for="movie in getOverview" class="col-4">
+        <div v-for="movie in getMoviesState" class="col-4">
           <card
           :id="(movie.id as unknown as string)"
           :title="movie.title"
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import Card from '@/components/Card.vue';
 import stateManagement from '@/composables/stateManagement';
 
@@ -35,15 +35,13 @@ export default defineComponent({
     Card,
   },
   setup () {
-    const { loadingState, loadOverview, getOverview } = stateManagement();
-    const { proxy } = getCurrentInstance();
-    console.log(proxy.$route);
+    const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
     onMounted( async () => {
-      await loadOverview();
+      await loadMovies();
     })
     return {
-      loadingState,
-      getOverview,
+      getLoadingState,
+      getMoviesState,
     }
   }
 })
