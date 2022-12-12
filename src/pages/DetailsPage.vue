@@ -84,7 +84,7 @@
     }
   });
   onMounted( async () => {
-    // await loadMovieDetails(props.id as unknown as MovieId);
+    await loadMovieDetails(props.id as unknown as MovieId);
   })
   defineExpose({
     getLoadingState,

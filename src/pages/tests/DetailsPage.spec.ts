@@ -1,35 +1,59 @@
-import type { Movie } from '@/types';
-import { mount, shallowMount } from '@vue/test-utils';
+import type { Movie, MovieDetails } from '@/types';
+import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
-import OverviewPage from '../OverviewPage.vue';
+import DetailsPage from '../DetailsPage.vue';
 
+const getLoadingStateSpy = vi.fn().mockReturnValue({ value: { movieDetails: 'done' }});
 vi.mock('@/composables/stateManagement', () => ({
     default: () => {
         return {
-            getLoadingState: { movies: 'done' },
-            getMoviesState: [{ id: 'id1', title: 'title1', description: '1998', image: 'image1'},{ id: 'id2', title: 'title2', description: '2000', image: 'image2'}] as unknown as Movie[],
-            loadMovies: vi.fn().mockReturnValue(Promise.resolve()),
+            getLoadingState: getLoadingStateSpy(),
+            getMovieDetailsState: { value: 
+                [{     
+                    image: 'image',
+                    fullTitle: 'fullTitle',
+                    plot: 'plot',
+                    directors: 'directors',
+                    writers: 'writers',
+                    stars: 'stars',
+                    imDbRating: '0',
+                    runtimeStr: '0h 0min',
+                    videoId: 'id',
+                }],
+             },
+            loadMovieDetails: vi.fn().mockReturnValue(Promise.resolve()),
         }
     }
 }));
 
-describe('Overview page', () => {
+describe('Details page', () => {
   it('should render', () => {
     const wrapper = createWrapper();
     expect(wrapper.find('header').exists()).toBeTruthy();
-    expect(wrapper.find('header img').attributes()).toContain({ alt: 'steven-and-hank', src: '/assets/images/steven-and-hank.jpg'});
-    expect(wrapper.findAll('section').length).toBe(2);
-    expect(wrapper.findAll('section').at(0)?.text()).toBe('The Steven Spielberg and Tom Hanks Movie AppFind all the movies in which they worked together.')
-    expect(wrapper.findAll('card-stub').length).toBe(2);
-    expect(wrapper.findAll('card-stub').at(0)?.attributes()).toContain({ id: 'id1', title: 'title1', year: '1998', image: 'image1'});
-    expect(wrapper.findAll('card-stub').at(1)?.attributes()).toContain({ id: 'id2', title: 'title2', year: '2000', image: 'image2'});
+    expect(wrapper.find('header img').attributes()).toContain({ src: 'image' });
+    expect(wrapper.find('header h1').text()).toBe('fullTitle');
+    expect(wrapper.find('header strong').text()).toBe('plot');
+    expect(wrapper.find('Breadcrumbs-stub').exists()).toBeTruthy();
+    expect(wrapper.findAll('.cast-block').length).toBe(3);
+    expect(wrapper.findAll('.cast-block').at(0)?.text()).toContain('directors');
+    expect(wrapper.findAll('.cast-block').at(1)?.text()).toContain('writers');
+    expect(wrapper.findAll('.cast-block').at(2)?.text()).toContain('stars');
+    expect(wrapper.find('.trailer h1').text()).toBe('Trailer')
+    expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/id' });
+  });
+  it('should show loading state when data is not loaded yet', () => {
+    getLoadingStateSpy.mockReturnValue({ value: { movieDetails: 'loading' }});
+    const wrapper = createWrapper();
+    expect(wrapper.find('header img').attributes()).toContain({ src: '/assets/images/loading-image.jpg' });
+    expect(wrapper.find('header h1').text()).toBe('loading');
+    expect(wrapper.find('header strong').text()).toBe('loading');
+    expect(wrapper.findAll('.cast-block').at(0)?.text()).toContain('loading');
+    expect(wrapper.findAll('.cast-block').at(1)?.text()).toContain('loading');
+    expect(wrapper.findAll('.cast-block').at(2)?.text()).toContain('loading');
+    expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/VBlFHuCzPgY' });
   });
 });
 
 const createWrapper = () => {
-  return mount(OverviewPage, {
-    global: {
-      stubs: ['card'],
-  }
-  });
+  return shallowMount(DetailsPage, {});
 };

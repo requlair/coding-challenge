@@ -1,5 +1,5 @@
 import type { Movie } from '@/types';
-import { mount, shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 import OverviewPage from '../OverviewPage.vue';
 
