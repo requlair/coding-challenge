@@ -55,9 +55,10 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue';
+  import { computed, onMounted } from 'vue';
   import Breadcrumbs from '@/components/Breadcrumbs.vue';
   import stateManagement from '@/composables/stateManagement';
+  import loadingImage from '../assets/images/loading-image.jpg';
   import type { MovieId } from '@/types'
   const props = defineProps({
     id: {
@@ -66,9 +67,24 @@
     }
   });
   const { getLoadingState, getMovieDetailsState, loadMovieDetails } = stateManagement();
-  const movieDetails = getMovieDetailsState.value.find(movie => movie.id as unknown as string === props.id)
+  const movieDetails = computed(() => {
+    if (getLoadingState.value.movieDetails === 'done') {
+      return getMovieDetailsState.value.find(movie => movie.id as unknown as string === props.id);
+    }
+    return {
+      image: loadingImage,
+      fullTitle: 'loading',
+      plot: 'loading',
+      directors: 'loading',
+      writers: 'loading',
+      stars: 'loading',
+      imDbRating: '0',
+      runtimeStr: '0h 0min',
+      videoId: 'VBlFHuCzPgY',
+    }
+  });
   onMounted( async () => {
-    await loadMovieDetails(props.id as unknown as MovieId);
+    // await loadMovieDetails(props.id as unknown as MovieId);
   })
   defineExpose({
     getLoadingState,
