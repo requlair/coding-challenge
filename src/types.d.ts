@@ -19,7 +19,7 @@ export interface MovieDetails {
     writers: string,
     stars: string,
     imDbRating: string,
-    runtimeMins: string,
+    runtimeStr: string,
     videoId?: string
 }
 export interface CastMovie {
@@ -29,4 +29,9 @@ export interface CastMovie {
 
 export interface MovieResponse {
     results: Movie[];
+}
+
+export interface Trailer {
+    imDbid: MovieId,
+    videoId: string,
 }

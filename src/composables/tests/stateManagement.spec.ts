@@ -4,13 +4,15 @@ import * as getPersonId from "@/services/getPersonId";
 import * as getMovieIds from "@/services/getMovieIds";
 import * as getMovies from "@/services/getMovies";
 import * as getMovieDetails from "@/services/getMovieDetails";
+import * as getMovieTrailer from "@/services/getMovieTrailer";
 import * as utils from "@/utils/utilities";
-import type { Movie, MovieDetails, MovieId, PersonId } from "@/types";
+import type { Movie, MovieDetails, MovieId, PersonId, Trailer } from "@/types";
 
 const getPersonIdSpy = vi.spyOn(getPersonId, 'getPersonId').mockResolvedValue('personId' as unknown as PersonId);
 const getMovieIdsSpy = vi.spyOn(getMovieIds, 'getMovieIds').mockResolvedValue(['movieId' as unknown as MovieId]);
 const getMoviesSpy = vi.spyOn(getMovies, 'getMovies').mockResolvedValue([{ id: 'id', title: 'title'} as unknown as Movie]);
 const getMovieDetailsSpy = vi.spyOn(getMovieDetails, 'getMovieDetails').mockResolvedValue({ id: 'id', title: 'title', image: 'image'} as unknown as MovieDetails);
+const getMovieTrailerSpy = vi.spyOn(getMovieTrailer, 'getMovieTrailer').mockResolvedValue({ imDbid: 'id', videoId: 'videoId' } as unknown as Trailer);
 
 const findMatchingIdsSpy = vi.spyOn(utils, 'findMatchingIds');
 
@@ -45,6 +47,7 @@ describe('stateManagement module', () => {
                 expect(findMatchingIdsSpy).toBeCalled();
                 expect(getMoviesSpy).toBeCalled();
                 expect(getMovieDetailsSpy).not.toBeCalled();
+                expect(getMovieTrailerSpy).not.toBeCalled();
             });
             it('should have set the correct states', () => {
                 expect(getLoadingState.value).toEqual({ movies: 'done', movieDetails: 'initial'});
@@ -71,14 +74,16 @@ describe('stateManagement module', () => {
                 expect(findMatchingIdsSpy).not.toBeCalled();
                 expect(getMoviesSpy).not.toBeCalled();
                 expect(getMovieDetailsSpy).toBeCalled();
+                expect(getMovieTrailerSpy).toBeCalled();
             });
             it('should have set the correct states', () => {
                 expect(getLoadingState.value).toEqual({ movies: 'done', movieDetails: 'done'});
-                expect(getMovieDetailsState.value).toEqual([{ id: 'id', title: 'title', image: 'image'}]);
+                expect(getMovieDetailsState.value).toEqual([{ id: 'id', title: 'title', image: 'image', videoId: 'videoId'}]);
             });
             it('should not load when moviesdetails are already present', async () => {
                 await loadMovies();
                 expect(getMovieDetailsSpy).not.toBeCalled();
+                expect(getMovieTrailerSpy).not.toBeCalled();
             });
         });
     });

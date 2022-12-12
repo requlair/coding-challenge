@@ -40,7 +40,7 @@ export default defineComponent({
   setup () {
     const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
     onMounted( async () => {
-      // await loadMovies();
+      await loadMovies();
     })
     return {
       getLoadingState,
