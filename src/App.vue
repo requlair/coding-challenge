@@ -9,8 +9,7 @@
 
   <footer>
     <div>
-      <span>Auteur</span>
-      <span>Email</span>
+      <strong>Created by: </strong><span>Lejon Bergman</span>
     </div>
   </footer>
 </template>
@@ -38,5 +37,9 @@
       max-width: 60rem;
       margin: auto;
     }
+  }
+  footer {
+    padding: 15px 30px 15px 30px;
+    margin-top: 150px;
   }
 </style>
