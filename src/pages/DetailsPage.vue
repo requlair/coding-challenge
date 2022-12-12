@@ -36,6 +36,13 @@
               <h4>Duration</h4>
               <span class="clock"></span><span>{{ movieDetails?.runtimeStr }}</span>
             </div>
+            <div class="favourite">
+              <h4>Favourite</h4>
+              <button @click="changeFavState()">
+                <span class="star" :class="{ selected: isMovieFav }"></span>
+                <span>{{ isMovieFav ? 'Marked as favourite' : 'Mark as favourite' }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -55,23 +62,29 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import Breadcrumbs from '@/components/Breadcrumbs.vue';
   import stateManagement from '@/composables/stateManagement';
   import loadingImage from '../assets/images/loading-image.jpg';
-  import type { MovieId } from '@/types'
+  import type { MovieDetails, MovieId } from '@/types'
   const props = defineProps({
     id: {
       type: String,
       require: true,
     }
   });
-  const { getLoadingState, getMovieDetailsState, loadMovieDetails } = stateManagement();
+  const { getLoadingState, 
+          getMovieDetailsState, 
+          loadMovieDetails, 
+          addFavourite, 
+          removeFavourite, 
+          getFavouritesState } = stateManagement();
   const movieDetails = computed(() => {
     if (getLoadingState.value.movieDetails === 'done') {
       return getMovieDetailsState.value.find(movie => movie.id as unknown as string === props.id);
     }
     return {
+      id: 'loading' as unknown as MovieId,
       image: loadingImage,
       fullTitle: 'loading',
       plot: 'loading',
@@ -81,14 +94,31 @@
       imDbRating: '0',
       runtimeStr: '0h 0min',
       videoId: 'VBlFHuCzPgY',
-    }
+    } as MovieDetails
   });
+  const isMovieFav = computed(() => {
+    if((getLoadingState.value.movieDetails === 'done')) {
+      return getFavouritesState.value.includes(movieDetails.value!.id);
+    }
+    return false;
+  });
+  const changeFavState = () => {
+    if(getLoadingState.value.movieDetails === 'done'){
+      if(isMovieFav.value) {
+        console.log('remove');
+        removeFavourite(props.id as unknown as MovieId);
+      }
+      addFavourite(props.id as unknown as MovieId);
+    }
+  };
   onMounted( async () => {
     await loadMovieDetails(props.id as unknown as MovieId);
   })
   defineExpose({
     getLoadingState,
     movieDetails,
+    isMovieFav,
+    changeFavState,
   })
 </script>
 
@@ -126,22 +156,38 @@
   }
   .rating-block {
     text-align: center;
-      h4 {
-          margin-bottom: 0px;
+    h4 {
+        margin-bottom: 0px;
+    }
+    .imdb {
+      .star:after {
+        margin-right: 5px;
+        color: orange;
+        content: "\2605";
       }
-      .imdb {
-        .star:after {
+    }
+    .time {
+      .clock:after {
+        margin-right: 5px;
+        content: "\1F552"
+      }
+    }
+    .favourite {
+      button {
+        border: none;
+        background-color: inherit;
+      }
+      .star:after {
           margin-right: 5px;
           color: orange;
-          content: "\2605";
+          content: "\2606";
         }
+      .selected:after {
+        margin-right: 5px;
+        color: orange;
+        content: "\2605";
       }
-      .time {
-        .clock:after {
-          margin-right: 5px;
-          content: "\1F552"
-        }
-      }
+    }
   }
   .trailer {
     border-radius: 10px;

@@ -11,9 +11,10 @@ const loadingState: { movies: Status, movieDetails: Status }= reactive({
     movies: 'initial',
     movieDetails: 'initial'
 });
-const state: { movies: Movie[], movieDetails: MovieDetails[] } = reactive({
+const state: { movies: Movie[], movieDetails: MovieDetails[], favourites: MovieId[] } = reactive({
     movies: [],
     movieDetails: [],
+    favourites: [],
 });
 
 function setLoadingState(key: 'movies' | 'movieDetails', status: Status) {
@@ -64,6 +65,17 @@ function setDetails(movieDetails: MovieDetails) {
 
 const getMovieDetailsState = computed(() => state.movieDetails);
 
+const addFavourite = (id: MovieId) => {
+    state.favourites.push(id);
+}
+const removeFavourite = (id: MovieId) => {
+    const index = state.favourites.indexOf(id);
+    state.favourites.splice(index, 1)
+}
+const getFavouritesState = computed(() => {
+    return state.favourites;
+})
+
 export default function stateManagement() {
     return {
         getLoadingState,
@@ -71,6 +83,9 @@ export default function stateManagement() {
         getMoviesState,
         loadMovieDetails,
         getMovieDetailsState,
+        addFavourite,
+        removeFavourite,
+        getFavouritesState,
     }
 }
 

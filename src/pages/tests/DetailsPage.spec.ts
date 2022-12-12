@@ -8,7 +8,8 @@ vi.mock('@/composables/stateManagement', () => ({
         return {
             getLoadingState: getLoadingStateSpy(),
             getMovieDetailsState: { value: 
-                [{     
+                [{
+                    id: 'id',     
                     image: 'image',
                     fullTitle: 'fullTitle',
                     plot: 'plot',
@@ -20,6 +21,7 @@ vi.mock('@/composables/stateManagement', () => ({
                     videoId: 'id',
                 }],
              },
+            getFavouritesState: { value: ['id'] },
             loadMovieDetails: vi.fn().mockReturnValue(Promise.resolve()),
         }
     }
@@ -37,6 +39,10 @@ describe('Details page', () => {
     expect(wrapper.findAll('.cast-block').at(0)?.text()).toContain('directors');
     expect(wrapper.findAll('.cast-block').at(1)?.text()).toContain('writers');
     expect(wrapper.findAll('.cast-block').at(2)?.text()).toContain('stars');
+    expect(wrapper.find('.rating-block').exists()).toBeTruthy();
+    expect(wrapper.find('.imdb').text()).toContain('0/10');
+    expect(wrapper.find('.time').text()).toContain('0h 0min');
+    expect(wrapper.find('.favourite').text()).toContain('Marked as favourite');
     expect(wrapper.find('.trailer h1').text()).toBe('Trailer')
     expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/id' });
   });
@@ -49,10 +55,16 @@ describe('Details page', () => {
     expect(wrapper.findAll('.cast-block').at(0)?.text()).toContain('loading');
     expect(wrapper.findAll('.cast-block').at(1)?.text()).toContain('loading');
     expect(wrapper.findAll('.cast-block').at(2)?.text()).toContain('loading');
+    expect(wrapper.find('.rating-block').exists()).toBeTruthy();
+    expect(wrapper.find('.imdb').text()).toContain('0/10');
+    expect(wrapper.find('.time').text()).toContain('0h 0min');
+    expect(wrapper.find('.favourite').text()).toContain('Mark as favourite');
     expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/VBlFHuCzPgY' });
   });
 });
 
 const createWrapper = () => {
-  return shallowMount(DetailsPage, {});
+  return shallowMount(DetailsPage, {
+    props: { id: 'id' }
+  });
 };

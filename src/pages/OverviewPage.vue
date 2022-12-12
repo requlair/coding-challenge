@@ -10,8 +10,24 @@
     </section>
 
     <section class="container">
+        <div class="row">
+          <div class="col-5">
+            <div class="selection-bar">
+              <button
+                :class="{ selected: selectedMovies === 'all' }"
+                @click="setSelection('all')"
+                value="all">All Movies
+              </button>
+              <button
+                :class="{ selected: selectedMovies === 'fav' }"
+                @click="setSelection('fav')"
+                value="fav">Favourites
+              </button>
+            </div>
+          </div>
+        </div>
         <LoadContainer class="row" :status="getLoadingState.movies" variant="card">
-          <div v-for="movie in getMoviesState" :key="(movie.id as unknown as string)" class="col-4">
+          <div v-for="movie in movies" :key="(movie.id as unknown as string)" class="col-4">
             <Card
             :id="(movie.id as unknown as string)"
             :title="movie.title"
@@ -26,17 +42,31 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue';
+  import { onMounted, ref, computed } from 'vue';
   import Card from '@/components/Card.vue';
   import LoadContainer from '@/components/LoadContainer.vue';
   import stateManagement from '@/composables/stateManagement';
-  const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
+  const { getLoadingState, loadMovies, getMoviesState, getFavouritesState } = stateManagement();
+
+  const selectedMovies = ref('all');
+  const setSelection = (value: 'all' | 'fav') => {
+    selectedMovies.value = value;
+  };
+  const movies = computed(() => {
+    if(selectedMovies.value === 'fav') {
+      return getMoviesState.value.filter(movie => getFavouritesState.value.includes(movie.id));
+    }
+    return getMoviesState.value;
+  });
+
   onMounted( async () => {
     await loadMovies();
   })
   defineExpose({
+    selectedMovies,
+    setSelection,
     getLoadingState,
-    getMoviesState,
+    movies,
   })
 </script>
 
@@ -48,6 +78,26 @@
         display: block;
         max-width: 60%;
         margin: auto;
+      }
+    }
+    .selection-bar {
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      background-color: lightgray;
+      padding: 15px;
+      :nth-child(1) {
+        margin-right: 15px;
+      }
+      button {
+        background-color: white;
+        border-radius: 5px;
+        padding: 10px;
+        border: none;
+      }
+      .selected {
+          border: 2px solid black;
+          font-weight: bold;
       }
     }
 </style>

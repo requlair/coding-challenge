@@ -23,6 +23,9 @@ describe('stateManagement module', () => {
         getMoviesState,
         loadMovieDetails,
         getMovieDetailsState,
+        getFavouritesState,
+        addFavourite,
+        removeFavourite,
     } = stateManagement();
 
     describe('stateManagement functions', () => {
@@ -84,6 +87,20 @@ describe('stateManagement module', () => {
                 await loadMovies();
                 expect(getMovieDetailsSpy).not.toBeCalled();
                 expect(getMovieTrailerSpy).not.toBeCalled();
+            });
+        });
+        describe('when setting a favourite', () => {
+            it('should be added to the favourites state', () => {
+                expect(getFavouritesState.value).toEqual([]);
+                addFavourite('id' as unknown as MovieId);
+                expect(getFavouritesState.value).toEqual(['id']);
+            });
+        });
+        describe('when removing a favourite', () => {
+            it('should be removed from the favourites state', () => {
+                expect(getFavouritesState.value).toEqual(['id']);
+                removeFavourite('id' as unknown as MovieId);
+                expect(getFavouritesState.value).toEqual([]);
             });
         });
     });
