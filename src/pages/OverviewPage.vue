@@ -11,7 +11,7 @@
 
     <section class="container">
         <LoadContainer class="row" :status="getLoadingState.movies" variant="card">
-          <div v-for="movie in getMoviesState" class="col-4">
+          <div v-for="movie in getMoviesState" :key="(movie.id as unknown as string)" class="col-4">
             <Card
             :id="(movie.id as unknown as string)"
             :title="movie.title"

@@ -1,42 +1,41 @@
 <template>
     <div class="card">
-        <img alt="movie-logo" :src="image"/>
-        <h4>{{ title }} ({{ year }})</h4>
+        <img alt="movie-logo" :src="props.image"/>
+        <h4>{{ props.title }} ({{ props.year }})</h4>
         <button @click="navigateToDetails()"></button>
     </div>
 </template>
   
 <script setup lang='ts'>
+    import { computed } from 'vue';
     import { useRouter } from 'vue-router';
     const props = defineProps({
         id: {
-                type: String,
-                required: true,
-            },
-            title: {
-                type: String,
-                required: true,
-            },
-            year: {
-                type: String,
-                required: true,
-            },
-            image: {
-                type: String,
-                required: true,
-            }
+            type: String,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        year: {
+            type: String,
+            required: true,
+        },
+        image: {
+            type: String,
+            required: true,
+        }
     })
     const router = useRouter();
-    const { id, title, year, image } = props;
+    const id = computed(() => props.id);
     const navigateToDetails = () => {
         router.push({
-            path: `/overview/details/${id}`,
+            path: `/overview/details/${id.value}`,
         })
     };
     defineExpose({
-        image,
-        title,
-        year,
+        props,
         navigateToDetails,
     });
 </script>

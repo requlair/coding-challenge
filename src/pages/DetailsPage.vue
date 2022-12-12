@@ -22,7 +22,7 @@
           <div class="cast-block" v-for="cast in [
           { role: 'Director', persons: movieDetails?.directors },
           { role: 'Writer', persons: movieDetails?.writers },
-          { role: 'Stars', persons: movieDetails?.stars}]">
+          { role: 'Stars', persons: movieDetails?.stars}]" :key="cast.role">
             <strong>{{ cast.role }}:</strong>&nbsp;<p>{{ cast.persons }}</p>
           </div>
         </div>

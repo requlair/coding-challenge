@@ -8,7 +8,7 @@
         </ul>
     </div>
 </template>
-  
+
 <script setup lang='ts'>
     import { computed } from 'vue';
     import { useRouter, useRoute, type RouteLocationMatched } from 'vue-router'

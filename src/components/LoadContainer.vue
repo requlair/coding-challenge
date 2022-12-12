@@ -1,6 +1,6 @@
 <template>
-    <div v-if="status !== 'done' && variant === 'card'">
-        <div v-for="_ in [1,2,3]" class="col-4 card">
+    <div v-if="props.status !== 'done' && props.variant === 'card'">
+        <div v-for="index in [1,2,3]" :key="index" class="col-4 card">
             <div class="lds-ring">
                 <div></div>
                 <div></div>
@@ -15,7 +15,6 @@
 </template>
   
 <script setup lang='ts'>
-    import { ref } from 'vue';
     const props = defineProps({
         status: {
             type: String,
@@ -26,11 +25,8 @@
             required: true
         }
     })
-    const status = ref(props.status);
-    const variant = props.variant;
     defineExpose({
-        status,
-        variant,
+        props
     });
 </script>
   

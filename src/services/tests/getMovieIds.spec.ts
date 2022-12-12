@@ -16,28 +16,28 @@ describe('getMovieIds module', () => {
     global.fetch = vi.fn(() => Promise.resolve(response  as unknown as Response));
     const personId = 'personId' as unknown as PersonId;
     describe('getMovieIds function', () => {
+        let error: Error;
+        const setError = (err: any) => { error = err };
         it('should return movieIds', async () => {
             const result = await getMovieIds(personId, 'Director');
             expect(result).toEqual(['movieId']);
         });
         it('should throw error when reponse is not ok', async () => {
             response.ok = false;
-            let error;
             try {
                 await getMovieIds(personId, 'Director');
             } catch (err: any){
-                error = err;
+                setError(err);
             }
             expect(error.message).toBe('Failed to fetch movies');
             response.ok = true;
         });
         it('should throw error when no movies are found', async () => {
             body.castMovies[0].role = 'Actor';
-            let error;
             try {
                 await getMovieIds(personId, 'Director');
             } catch (err: any){
-                error = err;
+                setError(err);
             }
             expect(error.message).toBe('No movies found');
             body.castMovies[0].role = 'Director';

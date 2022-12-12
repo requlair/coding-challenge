@@ -1,4 +1,3 @@
-import type { Movie, MovieDetails } from '@/types';
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 import DetailsPage from '../DetailsPage.vue';

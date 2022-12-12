@@ -5,7 +5,7 @@ import { getMovies } from '@/services/getMovies';
 import { getMovieDetails } from '@/services/getMovieDetails';
 import { getMovieTrailer } from '@/services/getMovieTrailer';
 import { findMatchingIds } from '@/utils/utilities';
-import type { Movie, MovieDetails, MovieId, PersonId } from '@/types';
+import type { Movie, MovieDetails, MovieId } from '@/types';
 
 const loadingState: { movies: Status, movieDetails: Status }= reactive({
     movies: 'initial',
@@ -18,7 +18,7 @@ const state: { movies: Movie[], movieDetails: MovieDetails[] } = reactive({
 
 function setLoadingState(key: 'movies' | 'movieDetails', status: Status) {
     loadingState[key] = status;
-};
+}
 
 const getLoadingState = computed(() => loadingState);
 
