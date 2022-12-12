@@ -10,54 +10,44 @@
     </section>
 
     <section class="container">
-        <load-container class="row" :status="getLoadingState.movies" variant="card">
+        <LoadContainer class="row" :status="getLoadingState.movies" variant="card">
           <div v-for="movie in getMoviesState" class="col-4">
-            <card
+            <Card
             :id="(movie.id as unknown as string)"
             :title="movie.title"
             :year="movie.description"
             :image="movie.image"
             />
           </div>
-        </load-container>
+        </LoadContainer>
     </section>
 
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue';
-import Card from '@/components/Card.vue';
-import LoadContainer from '@/components/LoadContainer.vue';
-import stateManagement from '@/composables/stateManagement';
-
-export default defineComponent({
-  name: 'overview-page',
-  components: {
-    Card,
-    LoadContainer,
-  },
-  setup () {
-    const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
-    onMounted( async () => {
-      await loadMovies();
-    })
-    return {
-      getLoadingState,
-      getMoviesState,
-    }
-  }
-})
+<script setup lang="ts">
+  import { onMounted } from 'vue';
+  import Card from '@/components/Card.vue';
+  import LoadContainer from '@/components/LoadContainer.vue';
+  import stateManagement from '@/composables/stateManagement';
+  const { getLoadingState, loadMovies, getMoviesState } = stateManagement();
+  onMounted( async () => {
+    await loadMovies();
+  })
+  defineExpose({
+    getLoadingState,
+    getMoviesState,
+  })
 </script>
 
 <style lang="scss" scoped>
-header {
-  background-color: black;
-  margin: auto;
-  img {
-      display: block;
-      max-width: 60%;
-      margin: auto;
+  header {
+    background-color: black;
+    margin: auto;
+    img {
+        display: block;
+        max-width: 60%;
+        margin: auto;
+      }
     }
-  }
 </style>

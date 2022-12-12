@@ -9,13 +9,9 @@
     </div>
 </template>
   
-<script lang='ts'>
-import { defineComponent, computed } from 'vue';
-import { useRouter, useRoute, type RouteLocationMatched } from 'vue-router'
-
-export default defineComponent({
-name: 'breadcrumbs',
-setup () {
+<script setup lang='ts'>
+    import { computed } from 'vue';
+    import { useRouter, useRoute, type RouteLocationMatched } from 'vue-router'
     const router = useRouter();
     const route = useRoute();
     const breadcrumbs = computed(() => {
@@ -31,37 +27,34 @@ setup () {
         }
         return crumbs;
     });
-    // const breadcrumbs = [{ path: 'overview', meta: { title: 'Overview'}},{ path: 'details', meta: { title: 'Details'}}]
-    return {
+    defineExpose({
         breadcrumbs,
-    };
-},
-});
+    })
 </script>
   
 <style lang="scss" scoped>
-.breadcrumb {
-    ul {
-        padding-left: 0px;
+    .breadcrumb {
+        ul {
+            padding-left: 0px;
+        }
+        .breadcrumb-list {
+            li {
+                padding: 0;
+                display: inline-block;
+                color: #999;
+            }
+            li a:after {
+                content: "/";
+                margin-left: 5px;
+                color: #666;
+            }
+            li a {
+                text-decoration: none;
+                display: inline-block;
+                padding-right: 5px;
+                color: #666;
+            }
+        }   
     }
-    .breadcrumb-list {
-        li {
-            padding: 0;
-            display: inline-block;
-            color: #999;
-        }
-        li a:after {
-            content: "/";
-            margin-left: 5px;
-            color: #666;
-        }
-        li a {
-            text-decoration: none;
-            display: inline-block;
-            padding-right: 5px;
-            color: #666;
-        }
-    }   
-}
 </style>
   

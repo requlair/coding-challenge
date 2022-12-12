@@ -32,6 +32,6 @@ export interface MovieResponse {
 }
 
 export interface Trailer {
-    imDbid: MovieId,
+    imDbId: MovieId,
     videoId: string,
 }
