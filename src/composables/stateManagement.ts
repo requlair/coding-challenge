@@ -3,6 +3,7 @@ import { getPersonId } from '@/services/getPersonId'
 import { getMovieIds } from '@/services/getMovieIds';
 import { getMovies } from '@/services/getMovies';
 import { getMovieDetails } from '@/services/getMovieDetails';
+import { getMovieTrailer } from '@/services/getMovieTrailer';
 import { findMatchingIds } from '@/utils/utilities';
 import type { Movie, MovieDetails, MovieId, PersonId } from '@/types';
 
@@ -47,6 +48,8 @@ async function loadMovieDetails (movieId: MovieId) {
         setLoadingState('movieDetails','loading')
         try {
             const details = await getMovieDetails(movieId);
+            const trailer = await getMovieTrailer(movieId);
+            details.videoId = trailer.videoId;
             setDetails(details);
             setLoadingState('movieDetails','done')
         } catch (err) {

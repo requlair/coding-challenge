@@ -12,12 +12,15 @@ export interface Movie {
 }
 export interface MovieDetails {
     id: MovieId,
-    title: string,
-    year: string,
+    fullTitle: string,
     image: string,
-    releaseDate: string,
-    runtimeMins: string,
     plot: string,
+    directors: string,
+    writers: string,
+    stars: string,
+    imDbRating: string,
+    runtimeMins: string,
+    videoId?: string
 }
 export interface CastMovie {
     id: MovieId,
