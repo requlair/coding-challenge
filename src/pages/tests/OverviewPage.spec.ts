@@ -40,9 +40,6 @@ describe('Overview page', () => {
     expect(wrapper.findAll('button').at(1)?.classes()).toContain('selected');
     expect(wrapper.findAll('card-stub').length).toBe(1);
     expect(wrapper.findAll('card-stub').at(0)?.attributes()).toContain({ id: 'id1', title: 'title1', year: '1998', image: 'image1'});
-
-
-
   });
 });
 
