@@ -5,8 +5,7 @@ import type { MovieId } from "@/types";
 describe('getMovieDetails module', () => {
     const body = {
         id: 'id',
-        title: 'title',
-        year: 'year',
+        fullTitle: 'title',
         image: 'image',
     };
     const response = { 
@@ -22,8 +21,7 @@ describe('getMovieDetails module', () => {
             const result = await getMovieDetails(movieId);
             expect(result).toEqual({
                 id: 'id',
-                title: 'title',
-                year: 'year',
+                fullTitle: 'title',
                 image: 'image',
             });
         });
@@ -38,14 +36,14 @@ describe('getMovieDetails module', () => {
             response.ok = true;
         });
         it('should throw error when no movies are found', async () => {
-            body.title = null as unknown as string;
+            body.fullTitle = null as unknown as string;
             try {
                 await getMovieDetails(movieId)
             } catch (err: any){
                 setError(err);
             }
             expect(error.message).toBe('No movie found');
-            body.title = 'title'
+            body.fullTitle = 'title'
         });
     });
 });

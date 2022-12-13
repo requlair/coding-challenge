@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import DetailsPage from '../DetailsPage.vue';
 
 const getLoadingStateSpy = vi.fn().mockReturnValue({ value: { movieDetails: 'done' }});
+const getFavouritesStateSpy = vi.fn().mockReturnValue({ value: [] });
+const removeFavouriteSpy = vi.fn();
 vi.mock('@/composables/stateManagement', () => ({
     default: () => {
         return {
@@ -21,8 +23,10 @@ vi.mock('@/composables/stateManagement', () => ({
                     videoId: 'id',
                 }],
              },
-            getFavouritesState: { value: ['id'] },
+            getFavouritesState: getFavouritesStateSpy(),
             loadMovieDetails: vi.fn().mockReturnValue(Promise.resolve()),
+            removeFavourite: removeFavouriteSpy,
+            addFavourite: vi.fn(),
         }
     }
 }));
@@ -42,12 +46,12 @@ describe('Details page', () => {
     expect(wrapper.find('.rating-block').exists()).toBeTruthy();
     expect(wrapper.find('.imdb').text()).toContain('0/10');
     expect(wrapper.find('.time').text()).toContain('0h 0min');
-    expect(wrapper.find('.favourite').text()).toContain('Marked as favourite');
+    expect(wrapper.find('.favourite').text()).toContain('Mark as favourite');
     expect(wrapper.find('.trailer h1').text()).toBe('Trailer')
     expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/id' });
   });
   it('should show loading state when data is not loaded yet', () => {
-    getLoadingStateSpy.mockReturnValue({ value: { movieDetails: 'loading' }});
+    getLoadingStateSpy.mockReturnValueOnce({ value: { movieDetails: 'loading' }});
     const wrapper = createWrapper();
     expect(wrapper.find('header img').attributes()).toContain({ src: '/assets/images/loading-image.jpg' });
     expect(wrapper.find('header h1').text()).toBe('loading');
@@ -60,6 +64,15 @@ describe('Details page', () => {
     expect(wrapper.find('.time').text()).toContain('0h 0min');
     expect(wrapper.find('.favourite').text()).toContain('Mark as favourite');
     expect(wrapper.find('.trailer iframe').attributes()).toContain({ src: 'https://www.youtube.com/embed/VBlFHuCzPgY' });
+  });
+  it('should change the favourite icon and text when clicked', async () => {
+    getFavouritesStateSpy.mockReturnValueOnce({ value : ['id'] });
+    const wrapper = createWrapper();
+    expect(wrapper.find('.favourite').text()).toContain('Marked as favourite');
+    expect(wrapper.find('.favourite .star').classes()).toContain('selected');
+    expect(removeFavouriteSpy).not.toBeCalled();
+    await wrapper.find('button').trigger('click');
+    expect(removeFavouriteSpy).toBeCalled();
   });
 });
 
