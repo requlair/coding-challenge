@@ -105,7 +105,6 @@
   const changeFavState = () => {
     if(getLoadingState.value.movieDetails === 'done'){
       if(isMovieFav.value) {
-        console.log('remove');
         removeFavourite(props.id as unknown as MovieId);
       }
       addFavourite(props.id as unknown as MovieId);
