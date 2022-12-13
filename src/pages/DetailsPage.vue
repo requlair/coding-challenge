@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, onMounted } from 'vue';
   import Breadcrumbs from '@/components/Breadcrumbs.vue';
   import stateManagement from '@/composables/stateManagement';
   import loadingImage from '../assets/images/loading-image.jpg';
