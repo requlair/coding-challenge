@@ -11,7 +11,7 @@
 
     <section class="container">
         <div class="row">
-          <div class="col-5">
+          <div class="col-12">
             <div class="selection-bar">
               <button
                 :class="{ selected: selectedMovies === 'all' }"
@@ -60,7 +60,7 @@
   });
 
   onMounted( async () => {
-    await loadMovies();
+    // await loadMovies();
   })
   defineExpose({
     selectedMovies,
@@ -81,19 +81,15 @@
       }
     }
     .selection-bar {
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      background-color: lightgray;
-      padding: 15px;
+      margin-bottom: 20px;
       :nth-child(1) {
         margin-right: 15px;
       }
       button {
+        border: 1px solid lightgray;
         background-color: white;
         border-radius: 5px;
         padding: 10px;
-        border: none;
       }
       .selected {
           border: 2px solid black;
