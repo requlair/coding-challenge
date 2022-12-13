@@ -97,13 +97,10 @@
     } as MovieDetails
   });
   const isMovieFav = computed(() => {
-    if((getLoadingState.value.movieDetails === 'done')) {
-      return getFavouritesState.value.includes(movieDetails.value!.id);
-    }
-    return false;
+      return getFavouritesState.value.includes(props.id as unknown as MovieId);
   });
   const changeFavState = () => {
-    if(getLoadingState.value.movieDetails === 'done'){
+    if(getLoadingState.value.movieDetails === 'done' && getMovieDetailsState.value){
       if(isMovieFav.value) {
         removeFavourite(props.id as unknown as MovieId);
       }

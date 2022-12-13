@@ -7,7 +7,7 @@ const getMovieDetails = async ( id: MovieId ) => {
             throw new Error('Failed to fetch movie');
         }
         const movie: MovieDetails = await response.json();
-        if(movie.title === null) {
+        if(movie.fullTitle === null) {
             throw new Error('No movie found');
         }
         return movie;

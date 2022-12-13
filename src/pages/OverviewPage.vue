@@ -60,7 +60,7 @@
   });
 
   onMounted( async () => {
-    // await loadMovies();
+    await loadMovies();
   })
   defineExpose({
     selectedMovies,
